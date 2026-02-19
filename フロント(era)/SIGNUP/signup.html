@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規登録 - era</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .dark body {
+            background-color: #18191a;
+        }
+        .dark .bg-white {
+            background-color: #242526 !important;
+        }
+        .dark .text-gray-800 {
+            color: #e4e6eb !important;
+        }
+        .dark .text-gray-600 {
+            color: #b0b3b8 !important;
+        }
+        .dark .border-gray-300 {
+            border-color: #3e4042 !important;
+        }
+        .dark input, .dark select {
+             background-color: #3a3b3c !important;
+             color: #e4e6eb !important;
+        }
+        /* エラー表示用のスタイル */
+        .error-text {
+            color: #ef4444; /* 赤色 */
+            font-size: 0.875rem; /* 少し小さめ */
+            margin-top: 0.25rem;
+        }
+        .input-error {
+            border-color: #ef4444 !important; /* 赤色の枠線 */
+        }
+    </style>
+</head>
+<body class="dark:bg-black">
+
+    <div class="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div>
+                <div class="flex items-center justify-center space-x-2">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <i data-lucide="zap" class="text-white w-6 h-6 sm:w-7 sm:h-7"></i>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-white">era</h1>
+                </div>
+                <h2 class="mt-6 text-center text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200">
+                    新しいアカウントを作成
+                </h2>
+                <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+                    すでにアカウントをお持ちですか？
+                    <a href="signin.html" class="font-medium text-blue-600 hover:text-blue-500">
+                        ログイン
+                    </a>
+                </p>
+            </div>
+            
+            <form id="signup-form" class="mt-8 space-y-6" action="verification.html" method="GET" novalidate>
+                <div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="age" class="sr-only">年代</label>
+                            <select id="age" name="age" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm">
+                                <option value="" disabled selected>年代を選択</option>
+                                <option>10代</option>
+                                <option>20代</option>
+                                <option>30代</option>
+                                <option>40代</option>
+                                <option>50代</option>
+                                <option>60代</option>
+                                <option>70代</option>
+                                <option>80代</option>
+                                <option>90代以上</option>
+                            </select>
+                            <p id="age-error" class="error-text hidden">記入していません</p>
+                        </div>
+                        <div>
+                           <label for="gender" class="sr-only">性別</label>
+                            <select id="gender" name="gender" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm">
+                                <option value="" disabled selected>性別を選択</option>
+                                <option>男性</option>
+                                <option>女性</option>
+                            </select>
+                            <p id="gender-error" class="error-text hidden">記入していません</p>
+                        </div>
+                    </div>
+                    <div class="pt-4">
+                        <label for="full-name" class="sr-only">氏名</label>
+                        <input id="full-name" name="full-name" type="text" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="氏名">
+                        <p id="name-error" class="error-text hidden">記入していません</p>
+                    </div>
+                     <div class="pt-4">
+                        <label for="username" class="sr-only">ユーザーネーム</label>
+                        <input id="username" name="username" type="text" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="ユーザーネーム (例: era_user)">
+                        <p id="username-error" class="error-text hidden">記入していません</p>
+                    </div>
+                    <div class="pt-4">
+                        <label for="email-address" class="sr-only">メールアドレス</label>
+                        <input id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="メールアドレス">
+                        <p id="email-error" class="error-text hidden">記入していません</p>
+                    </div>
+                    <div class="pt-4">
+                        <label for="tel" class="sr-only">電話番号</label>
+                        <input id="tel" name="tel" type="tel" autocomplete="tel" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="電話番号">
+                        <p id="tel-error" class="error-text hidden">記入していません</p>
+                    </div>
+                    <div class="pt-4">
+                        <label for="password" class="sr-only">パスワード</label>
+                        <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="パスワード">
+                        <p id="password-error" class="error-text hidden">記入していません</p>
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        同意して本人確認へ進む
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/lucide-static@latest/umd/lucide.js"></script>
+    <script>
+        lucide.createIcons();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('signup-form');
+
+            // フォームが送信されようとした時のイベントを監視
+            form.addEventListener('submit', (event) => {
+                console.log("フォーム送信イベント発生！"); // デバッグ用ログ
+
+                let isFormValid = true;
+
+                // チェック対象のフィールドを定義
+                const fieldsToValidate = [
+                    { inputId: 'age', errorId: 'age-error' },
+                    { inputId: 'gender', errorId: 'gender-error' },
+                    { inputId: 'full-name', errorId: 'name-error' },
+                    { inputId: 'username', errorId: 'username-error' },
+                    { inputId: 'email-address', errorId: 'email-error' },
+                    { inputId: 'tel', errorId: 'tel-error' },
+                    { inputId: 'password', errorId: 'password-error' }
+                ];
+
+                // 全てのフィールドをチェック
+                fieldsToValidate.forEach(field => {
+                    const inputElement = document.getElementById(field.inputId);
+                    const errorElement = document.getElementById(field.errorId);
+
+                    if (inputElement.value.trim() === '') {
+                        isFormValid = false;
+                        inputElement.classList.add('input-error');
+                        errorElement.classList.remove('hidden');
+                    } else {
+                        inputElement.classList.remove('input-error');
+                        errorElement.classList.add('hidden');
+                    }
+                });
+
+                console.log("バリデーション結果:", isFormValid); // デバッグ用ログ
+
+                // もしフォームが無効（isFormValidがfalse）なら、送信を中止
+                if (!isFormValid) {
+                    console.log("フォームが無効のため、送信を中止します。"); // デバッグ用ログ
+                    event.preventDefault(); 
+                } else {
+                    console.log("フォームは有効です。送信を許可します。"); // デバッグ用ログ
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

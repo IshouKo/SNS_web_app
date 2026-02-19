@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: sns_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: . # Dockerfileがeraフォルダの直下にあるので、ビルドコンテキストは '.' でOK
+    ports:
+      - "5001:5000" # 必要であれば "5001:5000" などに変更
+    volumes:
+      - .:/code # ★プロジェクトルート (era) 全体をコンテナの /code にマウント
+    working_dir: /code # ★コンテナ内の作業ディレクトリを /code に設定
+    environment:
+      PYTHONUNBUFFERED: 1
+      PYTHONPATH: /code
+    depends_on:
+      - db
+    command: >
+      sh -c "pip install -r requirements.txt &&
+             flask --app app init-db &&
+             python app.py"
+    stdin_open: true # 標準入力を開く (Pythonがよりインタラクティブになる)
+    tty: true        # 擬似TTYを割り当てる (ログ表示を改善)
+
+volumes:
+  db_data:

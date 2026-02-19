@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang=ja>
+
+<head>
+    <meta charset=UTF-8>
+    <meta name=viewport content=width=device-width, initial-scale=1.0>
+    <title>era - 新世代のSNS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #ffffff; /* モバイルでは白背景 */
+        }
+        @media (min-width: 640px) { /* sm以上のブレークポイント */
+            body {
+                background-color: #f0f2f5; /* PCでは薄いグレー背景 */
+            }
+        }
+        .dark body {
+            background-color: #000000 !important;
+        }
+        .dark .bg-white {
+            background-color: #18191a !important;
+        }
+        .dark .sm\:bg-gray-50 {
+            background-color: #000000 !important;
+        }
+        .dark .bg-gray-100 {
+            background-color: #3a3b3c !important;
+        }
+        .dark .text-gray-800 {
+            color: #e4e6eb !important;
+        }
+        .dark .text-gray-600 {
+            color: #b0b3b8 !important;
+        }
+        .dark .border-gray-200 {
+            border-color: #3e4042 !important;
+        }
+        .dark .hover\:bg-gray-100:hover {
+            background-color: #3a3b3c !important;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #242526;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+
+<body class="bg-white sm:bg-gray-50 dark:bg-black text-gray-800">
+
+<header class="bg-white dark:bg-gray-800 border-b border-gray-200 sticky top-0 z-40">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center space-x-2">
+                <img src="../HOME/Eraicon.png" alt="eraアイコン" class="w-8 h-8 sm:w-10 sm:h-10">
+                <h1 class="text-2xl font-bold text-gray-800 dark:text-white">era</h1>
+            </div>
+
+            <div class="hidden md:block w-1/3">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+                    </span>
+                    <input type="text" placeholder="検索..." class="w-full pl-10 pr-4 py-2 rounded-full bg-gray-100 dark:bg-gray-700 border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 md:hidden">
+                     <i data-lucide="search" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
+                </button>
+                <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i data-lucide="phone" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
+                </button>
+                <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i data-lucide="message-square" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
+                </button>
+                <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 hidden sm:flex">
+                    <i data-lucide="bell" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
+                </button>
+                <img src="https://placehold.co/40x40/7c3aed/ffffff?text=U" alt="プロフィール画像" class="w-10 h-10 rounded-full cursor-pointer">
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container mx-auto px-0 sm:px-4 mt-0 sm:mt-6 pb-24 lg:pb-0">
+    <div class="grid grid-cols-12 gap-8">
+
+        <aside class="col-span-3 hidden lg:block">
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 sticky top-24">
+                <nav class="space-y-2">
+                     <a href="#" class="flex items-center space-x-3 px-3 py-2 text-blue-600 font-bold bg-blue-50 dark:bg-blue-900/50 rounded-lg">
+                        <i data-lucide="home" class="w-6 h-6"></i>
+                        <span>ホーム</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                        <span>グループ</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                        <i data-lucide="gem" class="w-6 h-6"></i>
+                        <span>サークル (有料)</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                        <i data-lucide="book-open-text" class="w-6 h-6"></i>
+                        <span>ブログ</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                        <i data-lucide="swords" class="w-6 h-6"></i>
+                        <span>ミニゲーム</span>
+                    </a>
+                     <a href="#" class="flex items-center space-x-3 px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                        <i data-lucide="user" class="w-6 h-6"></i>
+                        <span>プロフィール</span>
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <div class="col-span-12 lg:col-span-6">
+            
+            <div class="bg-white dark:bg-gray-800 sm:rounded-lg sm:border border-gray-200 p-4 mb-6">
+                <div class="flex items-start space-x-4">
+                    <img src="https://placehold.co/40x40/7c3aed/ffffff?text=U" alt="プロフィール画像" class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <textarea class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3 text-gray-800 dark:text-gray-200 border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="いまどうしてる？"></textarea>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center mt-4">
+                    <div class="flex space-x-2 text-gray-500 dark:text-gray-400">
+                        <button class="flex items-center space-x-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                            <i data-lucide="image" class="w-5 h-5 text-green-500"></i>
+                            <span class="text-sm font-medium hidden sm:inline">写真/動画</span>
+                        </button>
+                        <button class="flex items-center space-x-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                            <i data-lucide="user-plus" class="w-5 h-5 text-blue-500"></i>
+                            <span class="text-sm font-medium hidden sm:inline">タグ付け</span>
+                        </button>
+                    </div>
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full transition-colors duration-300">
+                        投稿する
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 sm:rounded-lg sm:border border-gray-200">
+                <div class="p-4">
+                    <p id="timeline-description" class="text-sm text-gray-600 dark:text-gray-400 mb-3">あなたの年代（20代）の投稿が表示されています。</p>
+                    <div class="border-b border-gray-200 dark:border-gray-700">
+                        <nav class="-mb-px flex space-x-4 overflow-x-auto" aria-label="Tabs" id="age-filter-tabs">
+                            <a href="#" class="age-tab shrink-0 border-blue-500 text-blue-600 whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm rounded-t-md" data-age-filter="20" aria-current="page">20代</a>
+                            <a href="#" class="age-tab shrink-0 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-500 whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-md" data-age-filter="all">すべて</a>
+                            <a href="#" class="age-tab shrink-0 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-500 whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-md" data-age-filter="30">30代</a>
+                            <a href="#" class="age-tab shrink-0 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-500 whitespace-nowrap py-3 px-2 border-b-2 font-medium text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-md" data-age-filter="40">40代</a>
+                        </nav>
+                    </div>
+                </div>
+
+                <div id="timeline-wrapper">
+                    <div id="timeline-posts" class="space-y-0">
+                        
+                        <div class="post-item hidden bg-white dark:bg-gray-800 p-4 border-t border-gray-200" data-age="30">
+                             <div class="flex items-center space-x-3 mb-3">
+                                <img src="https://placehold.co/40x40/8b5cf6/ffffff?text=C" alt="プロフィール画像" class="w-10 h-10 rounded-full">
+                                <div>
+                                    <p class="font-bold text-gray-800 dark:text-white text-sm">高橋 大輔 <span class="text-xs font-normal text-gray-500 dark:text-gray-400">@daisuke_t ・ 30分前 (30代)</span></p>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 dark:text-gray-300 mb-3 text-sm">最近、子育てと仕事の両立について考えることが多いです。同じ年代の皆さんはどう工夫していますか？情報交換したいです！ #子育て #ワークライフバランス</p>
+                            <div class="mt-4 pt-2 flex justify-between items-center text-gray-500 dark:text-gray-400">
+                                <div class="flex space-x-6">
+                                    <button class="flex items-center space-x-1 hover:text-blue-500"><i data-lucide="message-circle" class="w-5 h-5"></i> <span class="text-xs">25</span></button>
+                                    <button class="flex items-center space-x-1 hover:text-yellow-500"><i data-lucide="lightbulb" class="w-5 h-5"></i> <span class="text-xs">わかる (55)</span></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="post-item hidden bg-white dark:bg-gray-800 border-t border-gray-200" data-age="30">
+                             <div class="p-4">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <img src="https://placehold.co/40x40/10b981/ffffff?text=K" alt="プロフィール画像" class="w-10 h-10 rounded-full">
+                                    <div>
+                                        <p class="font-bold text-gray-800 dark:text-white text-sm">佐藤 健太 <span class="text-xs font-normal text-gray-500 dark:text-gray-400">@kenta_sato ・ 2時間前 (30代)</span></p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 dark:text-gray-300 mb-3 text-sm">週末は久しぶりにキャンプへ。自然の中で焚き火を囲む時間は最高のリフレッシュになりますね。おすすめのキャンプ場あったら教えてください！</p>
+                            </div>
+                            <img src="https://placehold.co/600x400/10b981/333333?text=Camping+Night" alt="キャンプの写真" class="w-full h-auto">
+                            <div class="p-4">
+                                <div class="flex justify-between items-center text-gray-500 dark:text-gray-400">
+                                    <div class="flex space-x-6">
+                                        <button class="flex items-center space-x-1 hover:text-blue-500"><i data-lucide="message-circle" class="w-5 h-5"></i> <span class="text-xs">42</span></button>
+                                        <button class="flex items-center space-x-1 hover:text-yellow-500"><i data-lucide="lightbulb" class="w-5 h-5"></i> <span class="text-xs">わかる (120)</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-item hidden bg-white dark:bg-gray-800 border-t border-gray-200" data-age="30">
+                             <div class="p-4">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <img src="https://placehold.co/40x40/ec4899/ffffff?text=D" alt="プロフィール画像" class="w-10 h-10 rounded-full">
+                                    <div>
+                                        <p class="font-bold text-gray-800 dark:text-white text-sm">中村 優子 <span class="text-xs font-normal text-gray-500 dark:text-gray-400">@yuko_naka ・ 5時間前 (30代)</span></p>
+                                        <p class="text-xs text-purple-500 font-semibold">ブログ投稿</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <img src="https://placehold.co/600x300/ec4899/333333?text=30s+Career+Shift" alt="ブログのサムネイル" class="w-full h-auto">
+                            <div class="p-4">
+                                <h3 class="text-md font-bold mb-2 text-gray-800 dark:text-white">30代からのキャリアチェンジ：未経験からWebデザイナーへ</h3>
+                                <div class="mt-4 pt-2 flex justify-between items-center text-gray-500 dark:text-gray-400">
+                                    <div class="flex space-x-6">
+                                        <button class="flex items-center space-x-1 hover:text-blue-500"><i data-lucide="message-circle" class="w-5 h-5"></i> <span class="text-xs">88</span></button>
+                                        <button class="flex items-center space-x-1 hover:text-yellow-500"><i data-lucide="lightbulb" class="w-5 h-5"></i> <span class="text-xs">わかる (251)</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="post-item hidden bg-white dark:bg-gray-800 p-4 border-t border-gray-200" data-age="20">
+                            <div class="flex items-center space-x-3 mb-3">
+                               <img src="https://placehold.co/40x40/3b82f6/ffffff?text=A" alt="プロフィール画像" class="w-10 h-10 rounded-full">
+                               <div>
+                                   <p class="font-bold text-gray-800 dark:text-white text-sm">伊藤 あやか <span class="text-xs font-normal text-gray-500 dark:text-gray-400">@ayaka_ito ・ 8時間前 (20代)</span></p>
+                               </div>
+                           </div>
+                           <p class="text-gray-700 dark:text-gray-300 mb-3 text-sm">最近読んだミステリー小説が面白すぎた...！皆さんのおすすめの本があったら教えてほしいです。ジャンルは問いません！ #読書 #おすすめ本</p>
+                           <div class="mt-4 pt-2 flex justify-between items-center text-gray-500 dark:text-gray-400">
+                               <div class="flex space-x-6">
+                                   <button class="flex items-center space-x-1 hover:text-blue-500"><i data-lucide="message-circle" class="w-5 h-5"></i> <span class="text-xs">115</span></button>
+                                   <button class="flex items-center space-x-1 hover:text-yellow-500"><i data-lucide="lightbulb" class="w-5 h-5"></i> <span class="text-xs">わかる (98)</span></button>
+                               </div>
+                           </div>
+                       </div>
+                       
+                        <div class="post-item hidden bg-white dark:bg-gray-800 p-4 border-t border-gray-200" data-age="40">
+                            <div class="flex items-center space-x-3 mb-3">
+                               <img src="https://placehold.co/40x40/f97316/ffffff?text=T" alt="プロフィール画像" class="w-10 h-10 rounded-full">
+                               <div>
+                                   <p class="font-bold text-gray-800 dark:text-white text-sm">田中 誠 <span class="text-xs font-normal text-gray-500 dark:text-gray-400">@makoto_tanaka ・ 1日前 (40代)</span></p>
+                               </div>
+                           </div>
+                           <p class="text-gray-700 dark:text-gray-300 mb-3 text-sm">最近始めた家庭菜園が楽しい。自分で育てた野菜は格別ですね。次はなにを育てようかな。 #家庭菜園 #スローライフ</p>
+                           <div class="mt-4 pt-2 flex justify-between items-center text-gray-500 dark:text-gray-400">
+                               <div class="flex space-x-6">
+                                   <button class="flex items-center space-x-1 hover:text-blue-500"><i data-lucide="message-circle" class="w-5 h-5"></i> <span class="text-xs">33</span></button>
+                                   <button class="flex items-center space-x-1 hover:text-yellow-500"><i data-lucide="lightbulb" class="w-5 h-5"></i> <span class="text-xs">わかる (89)</span></button>
+                               </div>
+                           </div>
+                       </div>
+                    </div>
+
+                    <div id="special-message" class="hidden p-8 text-center">
+                        <p class="text-gray-600 dark:text-gray-400">毎月15日に交流会を開催されますのでお楽しみに！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <aside class="col-span-12 lg:col-span-3 hidden md:block">
+             <div class="space-y-6 sticky top-24 px-4 sm:px-0">
+                 <div class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200">
+                    <h3 class="font-bold text-md mb-4">ランキング</h3>
+                    <p class="text-sm text-gray-500">現在開発中です。</p>
+                 </div>
+            </div>
+        </aside>
+    </div>
+</main>
+
+<footer class="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-gray-800 border-t border-gray-200 lg:hidden">
+    <nav class="flex justify-around h-16 items-center">
+        <a href="#" class="flex flex-col items-center justify-center text-blue-600 w-1/5">
+            <i data-lucide="home" class="w-6 h-6"></i>
+            <span class="text-xs font-bold">ホーム</span>
+        </a>
+        <a href="#" class="flex flex-col items-center justify-center text-gray-600 dark:text-gray-300 w-1/5">
+            <i data-lucide="users" class="w-6 h-6"></i>
+            <span class="text-xs">グループ</span>
+        </a>
+        <button class="flex flex-col items-center justify-center w-1/5">
+            <div class="w-14 h-14 -mt-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center border-4 border-white dark:border-gray-800 shadow-md">
+                 <i data-lucide="plus" class="text-white w-8 h-8"></i>
+            </div>
+        </button>
+        <a href="#" class="flex flex-col items-center justify-center text-gray-600 dark:text-gray-300 w-1/5">
+            <i data-lucide="bell" class="w-6 h-6"></i>
+             <span class="text-xs">お知らせ</span>
+        </a>
+        <a href="#" class="flex flex-col items-center justify-center text-gray-600 dark:text-gray-300 w-1/5">
+            <i data-lucide="user" class="w-6 h-6"></i>
+            <span class="text-xs">プロフィール</span>
+        </a>
+    </nav>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide-static@latest/umd/lucide.js"></script>
+<script>
+    // エラー修正：ページの読み込み完了後にスクリプトを実行する
+    document.addEventListener('DOMContentLoaded', () => {
+        // Lucideアイコンを初期化
+        lucide.createIcons();
+        
+        // --- 年代別フィルタリング機能 ---
+        const userAge = 20; // ユーザーの年代を20代に設定
+        const tabsContainer = document.getElementById('age-filter-tabs');
+        const timelinePostsContainer = document.getElementById('timeline-posts');
+        const allPosts = document.querySelectorAll('.post-item');
+        const specialMessage = document.getElementById('special-message');
+        const timelineDescription = document.getElementById('timeline-description');
+
+        // タブのクリックイベント
+        tabsContainer.addEventListener('click', (event) => {
+            const selectedTab = event.target.closest('a');
+            if (!selectedTab) return; // aタグでなければ何もしない
+            
+            event.preventDefault(); // リンクのデフォルト動作を無効化
+            
+            const filterValue = selectedTab.dataset.ageFilter;
+            
+            // すべてのタブからアクティブなスタイルを削除
+            tabsContainer.querySelectorAll('.age-tab').forEach(tab => {
+                tab.classList.remove('border-blue-500', 'text-blue-600', 'bg-blue-50', 'dark:bg-blue-900/50');
+                tab.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300', 'dark:text-gray-400', 'dark:hover:text-gray-300', 'dark:hover:border-gray-500', 'hover:bg-gray-100', 'dark:hover:bg-gray-700');
+                tab.removeAttribute('aria-current');
+            });
+            
+            // クリックされたタブにアクティブなスタイルを適用
+            selectedTab.classList.add('border-blue-500', 'text-blue-600', 'bg-blue-50', 'dark:bg-blue-900/50');
+            selectedTab.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300', 'dark:text-gray-400', 'dark:hover:text-gray-300', 'dark:hover:border-gray-500', 'hover:bg-gray-100', 'dark:hover:bg-gray-700');
+            selectedTab.setAttribute('aria-current', 'page');
+            
+            // 投稿の表示を更新
+            updatePostVisibility(filterValue);
+        });
+        
+        // 投稿の表示/非表示を更新する関数
+        const updatePostVisibility = (filter) => {
+            const filterAge = parseInt(filter, 10);
+
+            // ユーザー自身の年代タブが選択された場合
+            if (filterAge === userAge) {
+                timelinePostsContainer.classList.remove('hidden');
+                specialMessage.classList.add('hidden');
+                allPosts.forEach(post => {
+                    const postAge = parseInt(post.dataset.age, 10);
+                    if (postAge === userAge) {
+                        post.classList.remove('hidden');
+                    } else {
+                        post.classList.add('hidden');
+                    }
+                });
+                timelineDescription.textContent = `あなたの年代（${userAge}代）の投稿が表示されています。`;
+            } 
+            // 他の年代のタブ（「すべて」を含む）が選択された場合
+            else {
+                timelinePostsContainer.classList.add('hidden');
+                specialMessage.classList.remove('hidden');
+                if (filter === 'all') {
+                     timelineDescription.textContent = `すべてのタイムライン`;
+                } else {
+                     timelineDescription.textContent = `${filterAge}代のタイムライン`;
+                }
+            }
+        };
+        
+        // 初期表示の設定 (アクティブなタブにスタイルを適用)
+        const initialActiveTab = tabsContainer.querySelector(`[data-age-filter="${userAge}"]`);
+        if(initialActiveTab) {
+            initialActiveTab.classList.add('bg-blue-50', 'dark:bg-blue-900/50');
+            initialActiveTab.classList.remove('hover:bg-gray-100', 'dark:hover:bg-gray-700');
+        }
+        updatePostVisibility(String(userAge));
+    });
+</script>
+
+</body>
+</html>

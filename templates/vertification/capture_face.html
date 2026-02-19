@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}顔を撮影してください{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <h2 class="text-center">顔を撮影してください</h2>
+        <p>本人確認を完了するために、カメラに顔を映して撮影してください。</p>
+
+        <video id="videoElement" autoplay="true" class="img-fluid"></video>
+
+        <div class="text-center mt-3">
+            <button id="captureButton" class="btn btn-primary">撮影</button>
+        </div>
+        <canvas id="canvasElement" style="display: none;"></canvas>
+
+        <p class="mt-3" id="messageArea"></p>
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const video = document.getElementById('videoElement');
+        const canvas = document.getElementById('canvasElement');
+        const captureButton = document.getElementById('captureButton');
+        const messageArea = document.getElementById('messageArea');
+        const context = canvas.getContext('2d');
+
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(err) {
+                    console.error("カメラへのアクセス中にエラーが発生しました: " + err);
+                    messageArea.innerText = "カメラへのアクセスが許可されていません。ブラウザ設定を確認してください。";
+                });
+        }
+
+        captureButton.addEventListener('click', function() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const imageDataUrl = canvas.toDataURL('image/png');
+
+            messageArea.innerText = '画像をアップロードしています...';
+            fetch('{{ url_for("verification.verify_face") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image: imageDataUrl })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    messageArea.innerHTML = `<span class="text-success">✅ ${data.message}</span>`;
+                    setTimeout(() => {
+                        window.location.href = data.redirect_url;
+                    }, 2000);
+                } else {
+                    messageArea.innerHTML = `<span class="text-danger">❌ ${data.message}</span>`;
+                }
+            })
+            .catch(error => {
+                console.error('エラー:', error);
+                messageArea.innerHTML = '<span class="text-danger">❌ サーバーとの通信中にエラーが発生しました。</span>';
+            });
+        });
+    });
+</script>
+{% endblock %}

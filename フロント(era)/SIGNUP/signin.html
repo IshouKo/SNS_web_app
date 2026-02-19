@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン - era</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .dark body {
+            background-color: #18191a;
+        }
+        .dark .bg-white {
+            background-color: #242526 !important;
+        }
+        .dark .text-gray-800 {
+            color: #e4e6eb !important;
+        }
+        .dark .text-gray-600 {
+            color: #b0b3b8 !important;
+        }
+        .dark .border-gray-300 {
+            border-color: #3e4042 !important;
+        }
+        .dark input {
+             background-color: #3a3b3c !important;
+             color: #e4e6eb !important;
+        }
+        .error-text {
+            color: #ef4444; /* 赤色 */
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="dark:bg-black">
+
+    <div class="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div>
+                <div class="flex items-center justify-center space-x-2">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <i data-lucide="zap" class="text-white w-6 h-6 sm:w-7 sm:h-7"></i>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-white">era</h1>
+                </div>
+                <h2 class="mt-6 text-center text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200">
+                    アカウントにログイン
+                </h2>
+            </div>
+            <form id="signin-form" class="mt-8 space-y-6" novalidate>
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <label for="login-id" class="sr-only">メールアドレス/電話番号/ログインID</label>
+                        <input id="login-id" name="login-id" type="text" required class="appearance-none rounded-t-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="メールアドレス/電話番号/ログインID">
+                    </div>
+                    <div>
+                        <label for="password" class="sr-only">パスワード</label>
+                        <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-b-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="パスワード">
+                    </div>
+                </div>
+                
+                <p id="error-message" class="error-text hidden">IDまたはパスワードが正しくありません。</p>
+
+                <div class="flex items-center justify-end">
+                    <div class="text-sm">
+                        <a href="reset-password.html" class="font-medium text-blue-600 hover:text-blue-500">
+                            パスワードを忘れた方はこちら
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        ログイン
+                    </button>
+                </div>
+                
+                <div class="text-center">
+                    <div class="relative py-3">
+                      <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                      </div>
+                      <div class="relative flex justify-center">
+                        <span class="bg-gray-50 dark:bg-black px-2 text-sm text-gray-500 dark:text-gray-400">または</span>
+                      </div>
+                    </div>
+                </div>
+
+                <div>
+                    <a href="signup.html" class="group relative w-full flex justify-center py-3 px-4 border border-blue-600 text-sm font-medium rounded-full text-blue-600 bg-white dark:bg-transparent hover:bg-blue-50 dark:hover:bg-blue-900/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        新規会員登録
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/lucide-static@latest/umd/lucide.js"></script>
+    <script>
+        lucide.createIcons();
+
+        // --- ログイン認証機能 ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('signin-form');
+            const errorMessage = document.getElementById('error-message');
+
+            form.addEventListener('submit', (event) => {
+                // デフォルトのフォーム送信を停止
+                event.preventDefault();
+
+                // 入力された値を取得
+                const loginId = document.getElementById('login-id').value;
+                const password = document.getElementById('password').value;
+
+                // --- ダミーの認証 ---
+                // 本来はサーバーサイドでデータベースと照合します。
+                // ここでは、特定のIDとパスワードでログイン成功とします。
+                const CORRECT_ID = 'user';
+                const CORRECT_PASS = 'password';
+
+                if (loginId === CORRECT_ID && password === CORRECT_PASS) {
+                    // 認証成功
+                    console.log('ログイン成功！');
+                    errorMessage.classList.add('hidden'); // エラーメッセージを隠す
+                    
+                    // HOME/home.htmlに遷移
+                    window.location.href = '../HOME/home.html'; 
+
+                } else {
+                    // 認証失敗
+                    console.log('ログイン失敗');
+                    errorMessage.classList.remove('hidden'); // エラーメッセージを表示
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}本人確認を開始{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card my-5">
+        <div class="card-header text-center">
+            <h3>本人確認を開始</h3>
+        </div>
+        <div class="card-body text-center">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <p class="lead">サービスを完全に利用するには、本人確認が必要です。</p>
+            <p>身分証明書と顔写真を使用して、本人確認を行います。</p>
+            
+            <a href="{{ url_for('verification.upload_id_card') }}" class="btn btn-primary btn-lg mt-3">本人確認を開始する</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

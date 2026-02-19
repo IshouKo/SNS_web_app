@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}身分証明書をアップロード{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card my-5">
+        <div class="card-header text-center">
+            <h3>身分証明書をアップロード</h3>
+        </div>
+        <div class="card-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <p class="lead text-center">本人確認のために、有効な身分証明書の画像をアップロードしてください。</p>
+            <form action="{{ url_for('verification.upload_id_card') }}" method="post" enctype="multipart/form-data" class="mt-4">
+                <div class="mb-3">
+                    <label for="id_card_file" class="form-label">ファイルを選択</label>
+                    <input type="file" class="form-control" id="id_card_file" name="id_card_file" required accept="image/png, image/jpeg, image/gif">
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">アップロードして次へ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>{{ target_user.username }}のプロフィール - マイSNS</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f0f2f5; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #fff; border-bottom: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;}
+        .header h1 { margin: 0; font-size: 24px; color: #333; }
+        .nav a { margin-left: 20px; text-decoration: none; color: #007bff; font-weight: bold; }
+        .nav a:hover { text-decoration: underline; }
+        .container { max-width: 700px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .profile-header { text-align: center; margin-bottom: 30px; }
+        .profile-header h2 { font-size: 30px; margin-bottom: 10px; }
+        .profile-header p { color: #666; }
+        .follow-buttons { margin-top: 15px; }
+        .follow-buttons button {
+            padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;
+            margin: 0 5px;
+        }
+        .follow-buttons .follow-btn { background-color: #007bff; color: white; }
+        .follow-buttons .follow-btn:hover { background-color: #0056b3; }
+        .follow-buttons .unfollow-btn { background-color: #dc3545; color: white; }
+        .follow-buttons .unfollow-btn:hover { background-color: #c82333; }
+        .tweet-list { margin-top: 20px; }
+        .tweet-item { border: 1px solid #eee; padding: 15px; margin-bottom: 15px; border-radius: 8px; background-color: #fff; }
+        .tweet-item .author { font-weight: bold; color: #007bff; text-decoration: none; }
+        .tweet-item .timestamp { font-size: 0.8em; color: #666; margin-left: 10px; }
+        .tweet-item .body { margin-top: 5px; line-height: 1.6; }
+        .flash { padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+        .flash.success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+        .flash.danger { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+        .flash.info { background-color: #d1ecf1; color: #0c5460; border-color: #bee5eb; }
+        .profile-image {
+            width: 100px; /* 画像の幅 */
+            height: 100px; /* 画像の高さ */
+            border-radius: 50%; /* 円形にする */
+            object-fit: cover; /* 画像が歪まないようにカバー */
+            margin-bottom: 15px;
+            border: 2px solid #ddd; /* 枠線 */
+        }
+        .profile-bio {
+            margin-top: 15px;
+            font-size: 1em;
+            color: #555;
+            line-height: 1.5;
+            text-align: left; /* 自己紹介は左寄せに */
+            padding: 0 10px; /* 左右に少しパディング */
+        }
+        /* --- 編集モード用スタイル --- */
+        .profile-edit-form {
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+        }
+        .profile-edit-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .profile-edit-form input[type="text"],
+        .profile-edit-form textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            font-size: 1em;
+        }
+        /* type="file" は width調整が難しいので個別 */
+        .profile-edit-form input[type="file"] {
+            width: 100%; /* 親要素の幅いっぱいに */
+            padding: 10px 0;
+            margin-bottom: 15px;
+        }
+        .profile-edit-form button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .profile-edit-form button:hover {
+            background-color: #0056b3;
+        }
+        .profile-image-preview {
+            max-width: 100px;
+            max-height: 100px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            display: block; /* ブロック要素にして下に改行 */
+        }
+        .profile-image-current {
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Era</h1>
+        <div class="nav">
+            <a href="{{ url_for('main.index') }}">ホーム</a>
+            {% if 'user_id' in session %}
+            <span>ようこそ、<a href="{{ url_for('main.profile', username=session['username']) }}">{{ session['username'] }}</a> さん！</span>
+            <a href="{{ url_for('auth.logout') }}">ログアウト</a>
+            {% else %}
+            <a href="{{ url_for('auth.login') }}">ログイン</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="profile-header">
+            {% if target_user.profile_image %}
+                <img src="{{ target_user.profile_image }}" alt="プロフィール画像" class="profile-image">
+            {% else %}
+                <img src="https://via.placeholder.com/100/CCCCCC/FFFFFF?text=No+Image" alt="プロフィール画像" class="profile-image">
+            {% endif %}
+            <h2>{{ target_user.username }}</h2>
+            <p>年齢: {{ target_user.user_age }}歳</p>
+            <p>メールアドレス: {{ target_user.email }}</p>
+            <p>登録日: {{ target_user.created_at.strftime('%Y/%m/%d') }}</p>
+            {% if target_user.bio %}
+                <p class="profile-bio">{{ target_user.bio }}</p>
+            {% else %}
+                <p class="profile-bio text-muted">自己紹介はまだありません。</p>
+            {% endif %}
+
+
+            {# --- 編集ボタンとフォームの追加 --- #}
+            {% if is_current_user_profile %} {# ログイン中のユーザーが自分のプロフィールを見ている場合のみ表示 #}
+                <button type="button" onclick="toggleEditMode()" style="padding: 8px 15px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-top: 15px;">プロフィールを編集</button>
+
+                <div id="editProfileSection" class="profile-edit-form" style="display: none;"> {# 初期状態は非表示 #}
+                    <h3>プロフィール編集</h3>
+                    <form method="POST" enctype="multipart/form-data" action="{{ url_for('main.profile', username=target_user.username) }}">
+                        <label for="bio">自己紹介:</label>
+                        <textarea id="bio" name="bio" rows="5" placeholder="あなたの自己紹介を入力してください">{{ target_user.bio if target_user.bio else '' }}</textarea>
+
+                        <label for="profile_image_file">プロフィール画像 (ファイル選択):</label>
+                        <input type="file" id="profile_image_file" name="profile_image_file" accept="image/*">
+
+                        {# 現在の画像がある場合のみプレビューと削除オプションを表示 #}
+                        {% if target_user.profile_image %}
+                            <p class="profile-image-current">現在の画像:</p>
+                            <img src="{{ target_user.profile_image }}" alt="現在のプロフィール画像" class="profile-image-preview">
+                            <label style="display: block; margin-top: 10px;">
+                                <input type="checkbox" name="profile_image_remove"> 画像を削除
+                            </label>
+                        {% endif %}
+
+                        <button type="submit">保存</button>
+                    </form>
+                </div>
+            {% endif %}
+
+            {% if 'user_id' in session and session['user_id'] != target_user.id %}
+                <div class="follow-buttons">
+                    {% if is_following %}
+                        <a href="{{ url_for('main.unfollow', username=target_user.username) }}"><button class="unfollow-btn">フォロー解除</button></a>
+                    {% else %}
+                        <a href="{{ url_for('main.follow', username=target_user.username) }}"><button class="follow-btn">フォロー</button></a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+        <h3>{{ target_user.username }}のツイート</h3>
+        <div class="tweet-list">
+            {% if tweets %}
+                {% for tweet in tweets %}
+                    <div class="tweet-item">
+                        <div class="user-info">
+                            <a href="{{ url_for('main.profile', username=tweet.author.username) }}" class="author">{{ tweet.author.username }}</a>
+                            {% if tweet.author.user_age is not none %} {# user_ageが存在する場合のみ表示 #}
+                                <span class="user-age">({{ tweet.author.user_age }}歳)</span>
+                            {% endif %}
+                        </div>
+                        <span class="timestamp">{{ tweet.timestamp.strftime('%Y/%m/%d %H:%M') }}</span>
+                        <p class="body">{{ tweet.body }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>まだツイートがありません。</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function toggleEditMode() {
+            var editSection = document.getElementById('editProfileSection');
+            if (editSection.style.display === 'none' || editSection.style.display === '') {
+                editSection.style.display = 'block'; // 表示する
+            } else {
+                editSection.style.display = 'none'; // 非表示にする
+            }
+        }
+    </script>
+</body>
+</html>

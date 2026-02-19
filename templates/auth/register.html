@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>新規登録</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .container { max-width: 400px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { text-align: center; }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: calc(100% - 20px); padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;
+        }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #0056b3; }
+        .flash { padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+        .flash.success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+        .flash.danger { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+        .link { text-align: center; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>新規登録</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form method="POST">
+            <input type="text" name="username" placeholder="ユーザー名" required>
+            <input type="number" name="user_age" placeholder="年齢" required>
+            <input type="email" name="email" placeholder="メールアドレス" required>
+            <input type="password" name="password" placeholder="パスワード" required>
+            <textarea name="bio" placeholder="自己紹介 (オプション)" rows="3"></textarea>
+            <label for="profile_image_file" style="display: block; margin-bottom: 5px;">プロフィール画像:</label>
+            <input type="file" id="profile_image_file" name="profile_image_file" accept="image/*">
+            <button type="submit">次へ（本人確認に進む）</button>
+        </form>
+        <div class="link">
+            <p>アカウントをお持ちですか？ <a href="{{ url_for('auth.login') }}">ログイン</a></p>
+        </div>
+    </div>
+</body>
+</html>

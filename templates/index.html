@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>ホーム - Era</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f0f2f5; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #fff; border-bottom: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;}
+        .header h1 { margin: 0; font-size: 24px; color: #333; }
+        .nav a { margin-left: 20px; text-decoration: none; color: #007bff; font-weight: bold; }
+        .nav a:hover { text-decoration: underline; }
+        .container { max-width: 700px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .tweet-form textarea { width: calc(100% - 22px); padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; resize: vertical; min-height: 80px; }
+        .tweet-form button { padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; float: right; }
+        .tweet-form button:hover { background-color: #218838; }
+        .clear { clear: both; }
+        .tweet-list { margin-top: 20px; }
+        .tweet-item { border: 1px solid #eee; padding: 15px; margin-bottom: 15px; border-radius: 8px; background-color: #fff; }
+        .tweet-item .author { font-weight: bold; color: #007bff; text-decoration: none; }
+        .tweet-item .timestamp { font-size: 0.8em; color: #666; margin-left: 10px; }
+        .tweet-item .body { margin-top: 5px; line-height: 1.6; }
+        .flash { padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+        .flash.success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+        .flash.danger { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+        .flash.info { background-color: #d1ecf1; color: #0c5460; border-color: #bee5eb; }
+        .tweet-item .user-info { /* ユーザー名と年齢を囲むコンテナ */
+            display: inline-flex; /* インラインフレックスで並べる */
+            align-items: center; /* 垂直方向中央揃え */
+        }
+        .tweet-item .user-age { /* 年齢のスタイル */
+            font-size: 0.8em; /* タイムスタンプと同じくらいのサイズ */
+            margin-left: 5px; /* ユーザー名との間に少しスペース */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Era</h1>
+        <div class="nav">
+            <span>ようこそ、<a href="{{ url_for('main.profile', username=user.username) }}">{{ user.username }}</a> さん！</span>
+            <a href="{{ url_for('auth.logout') }}">ログアウト</a>
+        </div>
+    </div>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h2>新しいツイート</h2>
+        <form class="tweet-form" action="{{ url_for('main.post_tweet') }}" method="POST">
+            <textarea name="body" placeholder="今どうしてる？ (280文字まで)" maxlength="280"></textarea>
+            <button type="submit">ツイート</button>
+            <div class="clear"></div>
+        </form>
+
+        <h2>タイムライン</h2>
+        <div class="tweet-list">
+            {% if tweets %}
+                {% for tweet in tweets %}
+                    <div class="tweet-item">
+                        <div class="user-info">
+                            {% if tweet.author.profile_image %}
+                                <img src="{{ tweet.author.profile_image }}" alt="プロフィール画像" class="profile-image" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
+                            {% else %}
+                                <img src="https://via.placeholder.com/50/CCCCCC/FFFFFF?text=No+Image" alt="プロフィール画像" class="profile-image" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
+                            {% endif %}
+                            <a href="{{ url_for('main.profile', username=tweet.author.username) }}" class="author">{{ tweet.author.username }}</a>
+                            {% if tweet.author.user_age is not none %} {# user_ageが存在する場合のみ表示 #}
+                                <span class="user-age">({{ tweet.author.user_age }}歳)</span>
+                            {% endif %}
+                        </div>
+                        <span class="timestamp">{{ tweet.timestamp.strftime('%Y/%m/%d %H:%M') }}</span>
+                        <p class="body">{{ tweet.body }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>まだツイートがありません。誰かをフォローするか、最初のツイートを投稿してみましょう！</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
